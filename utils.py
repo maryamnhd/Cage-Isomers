@@ -44,7 +44,6 @@ def FGtoFG_distance_count(cage, Is):
 
     return dskeys, [countds[k] for k in dskeys], [count3ds[k][0] for k in dskeys], [count3ds[k][1] for k in dskeys], [count3ds[k][2] for k in dskeys]
 
-
 def reflect(cage,v):
     norm = numpy.linalg.norm
     v /= norm(v)
