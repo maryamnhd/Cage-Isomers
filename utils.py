@@ -4,7 +4,7 @@ from ase.io import read, write
 import os
 from ase.neighborlist import *
 
-def FG-FG_distance_count(cage, Is):
+def FGtoFG_distance_count(cage, Is):
 
     pairds = list(itertools.combinations(Is, 2))
 
