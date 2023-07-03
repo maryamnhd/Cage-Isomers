@@ -4,6 +4,51 @@ from ase.io import read, write
 import os
 from ase.neighborlist import *
 
+def FG-FG_distance_count(cage, Is):
+
+    pairds = list(itertools.combinations(Is, 2))
+
+    inNs = []
+
+    for ilinker in range(int(len(cage) / 4)):
+        ds = []
+        for islot in range(4):
+            d = round(numpy.linalg.norm(cage[ilinker * 4 + islot].position), 1)
+            ds += [d]
+        ds = numpy.array(ds)
+        inNs += [ilinker * 4 + islot for slots in numpy.where(ds == ds.min()) for islot in list(slots)]
+
+    dskeys = []
+    for paird in list(itertools.combinations(range(len(cage)), 2)): #pairds
+        if int(paird[0]/4) == int(paird[1]/4):continue
+        dskeys.append(round(cage.get_distance(paird[0], paird[1]), 2))
+    dskeys = sorted(list(set(dskeys)))
+
+    dds = dict((i, []) for i in dskeys)
+    for paird in pairds:
+        k = round(cage.get_distance(paird[0], paird[1]), 2)
+        dds[k].append(paird)
+
+    countds = dict((i, 0) for i in dskeys)
+
+    ds = dict((i, 1) for i in pairds)
+
+    for d in dskeys:
+        for iis in dds[d]:
+            countds[d] += ds[iis]
+
+    # ==================================================================================
+    count3ds = dict((i, [0, 0, 0]) for i in dskeys)
+
+    for d in dskeys:
+        for iis in dds[d]:
+            in0 = int(iis[0] not in inNs)
+            in1 = int(iis[1] not in inNs)
+            count3ds[d][in0 + in1] += ds[iis]
+
+    return dskeys,[countds[k] for k in dskeys], [count3ds[k][0] for k in dskeys], [count3ds[k][1] for k in dskeys], [count3ds[k][2] for k in dskeys]
+
+
 def reflect(cage,v):
     norm = numpy.linalg.norm
     v /= norm(v)
