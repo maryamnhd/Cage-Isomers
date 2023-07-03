@@ -43,7 +43,24 @@ def FGtoFG_distance_count(cage, Is):
             count3ds[d][in0 + in1] += ds[iis]
 
     return dskeys, [countds[k] for k in dskeys], [count3ds[k][0] for k in dskeys], [count3ds[k][1] for k in dskeys], [count3ds[k][2] for k in dskeys]
+    
+def KDE(xm, hm, nbins):
+    from sklearn.neighbors import KernelDensity
+    data = []
+    for ix in range(len(xm)):
+        d, n = xm[ix], hm[ix]
+        data = data + [d] * n
 
+    x_train = numpy.array(data)[:, numpy.newaxis]
+    x_test = numpy.linspace(0, max(xm)*1.05, nbins)[:, numpy.newaxis]
+
+    model = KernelDensity(kernel='gaussian', bandwidth=0.1)
+    model.fit(x_train)
+    log_dens = model.score_samples(x_test)
+    ydata = numpy.exp(log_dens)
+    ydata = ydata *len(data)/sum(ydata)
+    return x_test, ydata
+    
 def reflect(cage,v):
     norm = numpy.linalg.norm
     v /= norm(v)
