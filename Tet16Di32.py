@@ -100,7 +100,7 @@ if False:
     uniqueflag = [None]*(4**nLinkers)
 
     # Create directory for isomer structure files
-    path = 'Tet24Di48_isomers'
+    path = 'Tet16Di32_isomers'
     if not os.path.exists(path): os.mkdir(path)
 
     TL = list(zip(*TL))
