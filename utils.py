@@ -9,7 +9,6 @@ def FG-FG_distance_count(cage, Is):
     pairds = list(itertools.combinations(Is, 2))
 
     inNs = []
-
     for ilinker in range(int(len(cage) / 4)):
         ds = []
         for islot in range(4):
@@ -30,23 +29,20 @@ def FG-FG_distance_count(cage, Is):
         dds[k].append(paird)
 
     countds = dict((i, 0) for i in dskeys)
-
     ds = dict((i, 1) for i in pairds)
-
     for d in dskeys:
         for iis in dds[d]:
             countds[d] += ds[iis]
 
     # ==================================================================================
     count3ds = dict((i, [0, 0, 0]) for i in dskeys)
-
     for d in dskeys:
         for iis in dds[d]:
             in0 = int(iis[0] not in inNs)
             in1 = int(iis[1] not in inNs)
             count3ds[d][in0 + in1] += ds[iis]
 
-    return dskeys,[countds[k] for k in dskeys], [count3ds[k][0] for k in dskeys], [count3ds[k][1] for k in dskeys], [count3ds[k][2] for k in dskeys]
+    return dskeys, [countds[k] for k in dskeys], [count3ds[k][0] for k in dskeys], [count3ds[k][1] for k in dskeys], [count3ds[k][2] for k in dskeys]
 
 
 def reflect(cage,v):
